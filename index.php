@@ -1,32 +1,26 @@
 <?php
-// Create database connection using config file
-include_once("konek.php");
-// Fetch all users data from database
-$result = mysqli_query($con, "SELECT * FROM mahasiswa ");
-?>
-<html>
-<head> 
- <title>Halaman Utama</title>
-</head>
-<body>
-<a href="tambah.php">Tambah Data Baru</a><br/><br/>
- <table width='80%' border=1>
- <tr>
- <th>Nim</th> <th>Nama</th> <th>Gender</th> <th>Alamat</th> 
- <th>tgl lahir</th> <th>Update</th>
- </tr>
-<?php 
-while($user_data = mysqli_fetch_array($result)) { 
- echo "<tr>";
- echo "<td>".$user_data['nim']."</td>";
- echo "<td>".$user_data['nama']."</td>";
- echo "<td>".$user_data['jkel']."</td>";
- echo "<td>".$user_data['alamat']."</td>"; 
- echo "<td>".$user_data['tgllhr']."</td>"; 
- echo "<td><a href='edit.php?nim=$user_data[nim]'>Edit</a> | <a 
-href='delete.php?nim=$user_data[nim]'>Delete</a></td></tr>"; 
+echo "<h2>User</h2>
+<form method=POST action=form_user.php>
+<input type=submit value='Tambah User'>
+</form>
+<table  border='1'>
+<tr><th>No</th><th>Username</th><th>NamaLengkap</th><th>Email</th><th>Aksi</th
+></tr>";
+
+include "koneksi.php";
+$sql = "select * from user order by id_user";
+$tampil = mysqli_query($con, $sql);
+if (mysqli_num_rows($tampil) > 0) {
+    $no = 1;
+    while ($r = mysqli_fetch_array($tampil)) {
+        echo "<tr><td>$no</td><td>$r[id_user]</td>
+<td>$r[nama_lengkap]</td>
+<td>$r[email]</td>
+<td><a href='hapus_user.php?id=$r[id_user]'>Hapus</a></td>
+</tr>";
+        $no++;
+    }
+    echo "</table><br><a href='form_login.php'>Login</a>";
+} else {
+    echo "0 results";
 }
-?>
-</table>
-</body>
-</html>
